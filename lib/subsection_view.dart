@@ -62,7 +62,7 @@ class _SubsectionViewState extends State<SubsectionView> {
                 child: 
 		Container(
 		  height: MediaQuery.of(context).size.height * 0.2,
-		  children: [
+		  child:
                 ExpansionTile(
                 title: const Text("Forums"),
                 children: _forum!.subsections
@@ -73,7 +73,6 @@ class _SubsectionViewState extends State<SubsectionView> {
                         ))
                     .toList(),
               ),
-	      	]
 	      )
               ),
               Expanded(
