@@ -1,4 +1,4 @@
-package com.example.phpbb_flutter
+package it.denv.phpbb_flutter
 
 import io.flutter.embedding.android.FlutterActivity
 
