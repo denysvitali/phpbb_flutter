@@ -58,7 +58,9 @@ class _SubsectionViewState extends State<SubsectionView> {
       body: _forum == null
           ? const Center(child: CircularProgressIndicator())
           : Column(children: [
-              ExpansionTile(
+              SingleChildScrollView(
+                child: 
+                ExpansionTile(
                 title: const Text("Forums"),
                 children: _forum!.subsections
                     .map((subsection) => ListTile(
@@ -67,6 +69,7 @@ class _SubsectionViewState extends State<SubsectionView> {
                           onTap: () => _navigateToSubSection(subsection),
                         ))
                     .toList(),
+              ),
               ),
               Expanded(
                 child: ListView.separated(
