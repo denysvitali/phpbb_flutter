@@ -5,6 +5,20 @@ import 'package:phpbb_flutter/forum.dart';
 import 'package:phpbb_flutter/forum_section.dart';
 import 'package:phpbb_flutter/topic_view.dart';
 
+void fillSubSections(List<Element> forums, List<ForumSubsection> subsections) {
+  for (final forum in forums) {
+    final forumTitle = forum.querySelector("a.forumtitle");
+    if (forumTitle == null) {
+      continue;
+    }
+
+    subsections.add(ForumSubsection(
+        title: forumTitle.text,
+        description: getDescription(forum),
+        url: forumTitle.attributes['href'] ?? ""));
+  }
+}
+
 Future<List<ForumSection>> parseHomePage(String body) async {
   List<ForumSection> sections = List.empty(growable: true);
   final document = parser.parse(body);
@@ -26,19 +40,8 @@ Future<List<ForumSection>> parseHomePage(String body) async {
     final forums = section.querySelectorAll(
         "ul.topiclist.forums > li.row > dl.row-item > dt > div.list-inner");
 
-    List<ForumSubsection> subsections = List.empty(growable: true);
-
-    for (final forum in forums) {
-      final forumTitle = forum.querySelector("a.forumtitle");
-      if (forumTitle == null) {
-        continue;
-      }
-
-      subsections.add(ForumSubsection(
-          title: forumTitle.text,
-          description: getDescription(forum),
-          url: forumTitle.attributes['href'] ?? ""));
-    }
+    List<ForumSubsection> subsections = [];
+    fillSubSections(forums, subsections);
 
     sections
         .add(ForumSection(title: title, subsections: subsections, url: link));
@@ -56,6 +59,9 @@ Forum parseForum(String body) {
 
   if (sectionsContainer != null) {
     // Has sub-sections
+    final sectionRows = sectionsContainer.querySelectorAll(
+        "div.inner > ul.topiclist.forums > li.row > dl > dt > div.list-inner");
+    fillSubSections(sectionRows, subsections);
   }
 
   if (topicsContainer == null) {

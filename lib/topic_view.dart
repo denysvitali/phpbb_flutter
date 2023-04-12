@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:phpbb_flutter/parse.dart';
 
 class Topic {
@@ -84,7 +85,18 @@ class _TopicViewState extends State<TopicView> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      Text(post.content),
+                      Html(
+                        data: post.content,
+                        customRenders: {
+                          (context) =>
+                              context.tree.element?.attributes["src"] != null &&
+                              context.tree.element!.attributes["src"]!
+                                  .startsWith("./"): networkImageRender(
+                              mapUrl: (url) => Uri.parse(widget.url)
+                                  .resolve(url!)
+                                  .toString()),
+                        },
+                      ),
                     ],
                   ),
                 );

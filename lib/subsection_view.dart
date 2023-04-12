@@ -40,6 +40,14 @@ class _SubsectionViewState extends State<SubsectionView> {
     );
   }
 
+  void _navigateToSubSection(ForumSubsection subsection) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SubsectionView(subsection: subsection),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final DateFormat format = DateFormat('yyyy-MM-dd');
@@ -49,34 +57,49 @@ class _SubsectionViewState extends State<SubsectionView> {
       ),
       body: _forum == null
           ? const Center(child: CircularProgressIndicator())
-          : ListView.separated(
-              separatorBuilder: (context, index) => const Divider(),
-              itemCount: _forum!.topics.length,
-              itemBuilder: (context, topicIndex) {
-                final topic = _forum!.topics[topicIndex];
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  child: InkWell(
-                      onTap: () => {_navigateToTopic(topic)},
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            topic.title,
-                            style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'by ${topic.author} • ${format.format(topic.postedOn)}',
-                            style: const TextStyle(
-                                fontSize: 14, color: Colors.grey),
-                          ),
-                        ],
-                      )),
-                );
-              }),
+          : Column(children: [
+              ExpansionTile(
+                title: const Text("Forums"),
+                children: _forum!.subsections
+                    .map((subsection) => ListTile(
+                          title: Text(subsection.title),
+                          subtitle: Text(subsection.description),
+                          onTap: () => _navigateToSubSection(subsection),
+                        ))
+                    .toList(),
+              ),
+              Expanded(
+                child: ListView.separated(
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemCount: _forum!.topics.length,
+                    itemBuilder: (context, topicIndex) {
+                      final topic = _forum!.topics[topicIndex];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
+                        child: InkWell(
+                            onTap: () => {_navigateToTopic(topic)},
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  topic.title,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'by ${topic.author} • ${format.format(topic.postedOn)}',
+                                  style: const TextStyle(
+                                      fontSize: 14, color: Colors.grey),
+                                ),
+                              ],
+                            )),
+                      );
+                    }),
+              )
+            ]),
     );
   }
 }

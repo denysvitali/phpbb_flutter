@@ -34,7 +34,7 @@ class _ForumViewState extends State<ForumView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forum'),
+        title: const Text('Forum'),
       ),
       body: _sections.isNotEmpty
           ? ListView.builder(
