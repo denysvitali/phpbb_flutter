@@ -102,6 +102,7 @@ class _SubsectionViewState extends State<SubsectionView> {
 		]
 	    )
 	)
+	)
     );
   }
 }
