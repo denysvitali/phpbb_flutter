@@ -60,6 +60,9 @@ class _SubsectionViewState extends State<SubsectionView> {
           : Column(children: [
               SingleChildScrollView(
                 child: 
+		Container(
+		  height: MediaQuery.of(context).size.height * 0.2,
+		  children: [
                 ExpansionTile(
                 title: const Text("Forums"),
                 children: _forum!.subsections
@@ -70,6 +73,8 @@ class _SubsectionViewState extends State<SubsectionView> {
                         ))
                     .toList(),
               ),
+	      	]
+	      )
               ),
               Expanded(
                 child: ListView.separated(
