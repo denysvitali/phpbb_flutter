@@ -57,12 +57,9 @@ class _SubsectionViewState extends State<SubsectionView> {
       ),
       body: _forum == null
           ? const Center(child: CircularProgressIndicator())
-          : Column(children: [
-              SingleChildScrollView(
-                child: 
-		Container(
-		  height: MediaQuery.of(context).size.height * 0.2,
-		  child:
+          : Expanded(
+   	      child: SingleChildScrollView(
+	        child: Column(children: [
                 ExpansionTile(
                 title: const Text("Forums"),
                 children: _forum!.subsections
@@ -72,11 +69,8 @@ class _SubsectionViewState extends State<SubsectionView> {
                           onTap: () => _navigateToSubSection(subsection),
                         ))
                     .toList(),
-              ),
-	      )
-              ),
-              Expanded(
-                child: ListView.separated(
+              	),
+                ListView.separated(
                     separatorBuilder: (context, index) => const Divider(),
                     itemCount: _forum!.topics.length,
                     itemBuilder: (context, topicIndex) {
@@ -105,8 +99,9 @@ class _SubsectionViewState extends State<SubsectionView> {
                             )),
                       );
                     }),
-              )
-            ]),
+		]
+	    )
+	)
     );
   }
 }
